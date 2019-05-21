@@ -19,7 +19,7 @@ namespace ReflectionTest.Cars
 
         public bool IsMoving()
         {
-            return !(Speed == 0);
+            return Speed != 0;
         }
 
         public Car()

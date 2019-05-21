@@ -31,15 +31,42 @@ namespace ReflectionTest
             //GetConstructorInfo(t);
 
 
-            AssemblyDemo();
+            //AssemblyDemo();
 
+
+            LateBindingDemo();
             Console.ReadLine();
         }
+
+        private static void LateBindingDemo()
+        {
+            Assembly assembly;
+            assembly = Assembly.GetExecutingAssembly();
+
+            Type type = assembly.GetType("ReflectionTest.Cars.Car");
+            object obj = Activator.CreateInstance(type);
+
+
+            MethodInfo miMoving = type.GetMethod("IsMoving");
+            MethodInfo miAccelerate = type.GetMethod("Accelerate");
+
+            object[] speed = new object[] { 20 };
+            miAccelerate.Invoke(obj, speed);
+            bool isCarMoving = (bool)miMoving.Invoke(obj, null);
+            Console.WriteLine("Car is moving : {0}", isCarMoving);
+
+            object[] milesParams = new object[] { 32456, 32810, 10.6 };
+            MethodInfo micalculateMPG = type.GetMethod("CalculateMPG");
+            double milesPerCallon = (double)micalculateMPG.Invoke(obj, milesParams);
+            Console.WriteLine("Miles per gallon is  : {0}", milesPerCallon);
+            Console.WriteLine("");
+        }
+
         private static void AssemblyDemo()
         {
             Assembly assembly;
-            //objAssembly = Assembly.Load("mscorlib,2.0.0.0,Neutral,b77a5c561934e089");
-            //objAssembly = Assembly.LoadFrom(@"C:\Windows\Microsoft.NET\Framework\v1.1.4322\caspol.exe");   
+            //assembly = Assembly.Load("mscorlib,2.0.0.0,Neutral,b77a5c561934e089");
+            //assembly = Assembly.LoadFrom(@"C:\Windows\Microsoft.NET\Framework\v4.0.30319\caspol.exe");   
             assembly = Assembly.GetExecutingAssembly();
 
             Type[] types = assembly.GetTypes();
