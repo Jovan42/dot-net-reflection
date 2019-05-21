@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Text;
 
+/** URL: https://www.c-sharpcorner.com/UploadFile/keesari_anjaiah/reflection-in-net/ **/
 namespace ReflectionTest
 {
     class Program
@@ -20,7 +21,66 @@ namespace ReflectionTest
             //GetMethods(t);
             //GetMethod(t);
             //GetMethodsWithFlags(t);
+
+            //GetFields(t);
+            //GetProperties(t);
+            //GetInterfaces(t);
+
+            //GetParametersInfo(t);
+
+            //GetConstructorInfo(t);
+
             Console.ReadLine();
+        }
+
+        private static void GetConstructorInfo(Type t)
+        {
+            Console.WriteLine("***** ConstructorsInfo *****");
+            ConstructorInfo[] ci = t.GetConstructors();
+            foreach (ConstructorInfo c in ci)
+                Console.WriteLine(c.ToString());
+            Console.WriteLine("");
+        }
+
+        private static void GetParametersInfo(Type t)
+        {
+            Console.WriteLine("***** Get Parameters Info *****");
+            foreach(MethodInfo m in t.GetMethods())
+            {
+                string retVal = m.ReturnType.FullName;
+                StringBuilder paramInfo = new StringBuilder();
+                paramInfo.Append("(");
+                foreach (ParameterInfo pi in m.GetParameters())
+                    paramInfo.Append(string.Format("{0} {1} ", pi.ParameterType, pi.Name));
+                paramInfo.Append(")");
+                Console.WriteLine("->{0} {1} {2}", retVal, m.Name, paramInfo);
+                Console.WriteLine("");
+            }
+        }
+
+        private static void GetInterfaces(Type t)
+        {
+            Type[] ifaces = t.GetInterfaces();
+            foreach (Type i in ifaces)
+                Console.WriteLine("->{0}", i.Name);
+        }
+
+        public static void GetProperties(Type t)
+        {
+            Console.WriteLine("***** Properties *****");
+            PropertyInfo[] pi = t.GetProperties();
+            foreach (PropertyInfo prop in pi)
+                Console.WriteLine("->{0}", prop.Name);
+            Console.WriteLine("");
+        }
+
+        public static void GetFields(Type t)
+        {
+            Console.WriteLine("***** Fields *****");
+            FieldInfo[] fi = t.GetFields();
+            foreach (FieldInfo field in fi)
+                Console.WriteLine("->{0}", field.Name);
+            Console.WriteLine("");
         }
 
         private static void GetMethodsWithFlags(Type t)
@@ -80,6 +140,7 @@ namespace ReflectionTest
                 OutputText.AppendLine(Member.DeclaringType + " " + Member.MemberType + " " + Member.Name);
              
             Console.WriteLine(OutputText);
+            Console.WriteLine("");
         }
     }
 }
