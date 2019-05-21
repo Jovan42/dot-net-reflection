@@ -30,9 +30,27 @@ namespace ReflectionTest
 
             //GetConstructorInfo(t);
 
+
+            AssemblyDemo();
+
             Console.ReadLine();
         }
+        private static void AssemblyDemo()
+        {
+            Assembly assembly;
+            //objAssembly = Assembly.Load("mscorlib,2.0.0.0,Neutral,b77a5c561934e089");
+            //objAssembly = Assembly.LoadFrom(@"C:\Windows\Microsoft.NET\Framework\v1.1.4322\caspol.exe");   
+            assembly = Assembly.GetExecutingAssembly();
 
+            Type[] types = assembly.GetTypes();
+            foreach (Type type in types)
+                Console.WriteLine(type.Name);
+
+            Attribute[] attributes = Attribute.GetCustomAttributes(assembly);
+            foreach (Attribute attribute in attributes)
+                Console.WriteLine(attribute.TypeId);
+            Console.WriteLine("");
+        }
         private static void GetConstructorInfo(Type t)
         {
             Console.WriteLine("***** ConstructorsInfo *****");
@@ -134,10 +152,10 @@ namespace ReflectionTest
             OutputText.AppendLine("Is a COM Object : " + t.IsCOMObject);
 
             OutputText.AppendLine("\nPUBLIC MEMBERS:");
-            MemberInfo[] Members = t.GetMembers();
+            MemberInfo[] members = t.GetMembers();
 
-            foreach(MemberInfo Member in Members)
-                OutputText.AppendLine(Member.DeclaringType + " " + Member.MemberType + " " + Member.Name);
+            foreach(MemberInfo member in members)
+                OutputText.AppendLine(member.DeclaringType + " " + member.MemberType + " " + member.Name);
              
             Console.WriteLine(OutputText);
             Console.WriteLine("");
